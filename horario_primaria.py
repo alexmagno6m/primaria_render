@@ -18,7 +18,9 @@ html.Div([
   dcc.Dropdown([x for x in sorted(df.Profesor.unique())],
                id='professor_drop',
                 placeholder="Seleccione/escriba profesor")
-]),
+],
+    style={'width':'35%'}
+),
     dash_table.DataTable(
         data=df.to_dict('records'),
         page_size=10,
