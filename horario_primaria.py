@@ -6,18 +6,18 @@ import ssl
 
 
 ssl._create_default_https_context = ssl._create_unverified_context
-r = urllib.request.urlopen('https://raw.githubusercontent.com/alexmagno6m/render/main/BD_SECUNDARIA_2023_CSV.csv')
+r = urllib.request.urlopen('https://raw.githubusercontent.com/alexmagno6m/primaria_render/master/primaria_horario_2023.csv')
 df = pd.read_csv(r, sep=',')
-df = df[['PROFESOR_O_CURSOS', 'DIA', '1', '2', '3', '4', '5', '6']]
+df = df[['Profesor', 'Dia', '1', '2', '3', '4', '5', '6', '7', '8']]
 app = Dash(__name__)
 server = app.server
 app.layout = html.Div([
-    html.H2('Horario General Secundaria'),
+    html.H2('Horario General Primaria'),
     html.H2('Colegio Antonio Baraya IED'),
 html.Div([
-  dcc.Dropdown([x for x in sorted(df.PROFESOR_O_CURSOS.unique())],
+  dcc.Dropdown([x for x in sorted(df.Profesor.unique())],
                id='professor_drop',
-                placeholder="Seleccione/escriba un curso o profesor")
+                placeholder="Seleccione/escriba profesor")
 ]),
     dash_table.DataTable(
         data=df.to_dict('records'),
@@ -47,9 +47,9 @@ html.Div([
             ]
         ),
         style_cell_conditional = [
-            {'if': {'column_id': 'PROFESOR_O_CURSOS'},
+            {'if': {'column_id': 'Profesor'},
              'width': '15%'},
-            {'if': {'column_id': 'DIA'},
+            {'if': {'column_id': 'Dia'},
              'width': '10%'},
 
 ],
@@ -66,8 +66,8 @@ Input('professor_drop', 'value'),
 def update_dropdown(proff_v):
     dff = df.copy()
     if proff_v:
-        dff = dff[dff.PROFESOR_O_CURSOS==proff_v]
+        dff = dff[dff.Profesor==proff_v]
         return dff.to_dict('records')
 
 if __name__ == '__main__':
-    app.run_server(debug=False)
+    app.run_server(debug=True)
