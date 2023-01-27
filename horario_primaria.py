@@ -16,6 +16,7 @@ app.layout = html.Div([
     html.H2('Horario General Primaria'),
     html.H2('Colegio Antonio Baraya IED'),
 html.Div([
+    "Consulte el horario individual por profesor: ",
   dcc.Dropdown([x for x in sorted(df.Profesor.unique())],
                id='professor_drop',
                 placeholder="Seleccione/escriba profesor")
@@ -23,7 +24,7 @@ html.Div([
     style={'width':'35%'}
 ),
 html.Div([
-    "O tambien puede:",
+    "O tambien puede consultar el horario global por dia:",
     dcc.Dropdown([x for x in (df.Dia.unique())],
     id='dia_drop',
     placeholder="Seleccionar un dia")
