@@ -10,6 +10,7 @@ r = urllib.request.urlopen('https://raw.githubusercontent.com/alexmagno6m/primar
 df = pd.read_csv(r, sep=',')
 df = df[['Profesor', 'Dia', '1', '2', '3', '4', '5', '6', '7', '8']]
 app = Dash(__name__)
+PAGE_SIZE = 12
 server = app.server
 app.layout = html.Div([
     html.H2('Horario General Primaria'),
@@ -21,9 +22,17 @@ html.Div([
 ],
     style={'width':'35%'}
 ),
+html.Div([
+    "O tambien puede:",
+    dcc.Dropdown([x for x in (df.Dia.unique())],
+    id='dia_drop',
+    placeholder="Seleccionar un dia")
+],
+    style={'width':'30%'}
+),
     dash_table.DataTable(
         data=df.to_dict('records'),
-        page_size=10,
+        page_size=PAGE_SIZE,
         columns=[{'name': i, 'id': i} for i in df.columns],
         style_data_conditional=(
             [
@@ -64,12 +73,16 @@ html.Div([
 @callback(
 Output('my_table', 'data'),
 Input('professor_drop', 'value'),
+Input('dia_drop','value')
 )
-def update_dropdown(proff_v):
+def update_dropdown(proff_v, day_v):
     dff = df.copy()
     if proff_v:
         dff = dff[dff.Profesor==proff_v]
-        return dff.to_dict('records')
 
+
+    if day_v:
+        dff = dff[dff.Dia == day_v]
+    return dff.to_dict('records')
 if __name__ == '__main__':
     app.run_server(debug=False)
