@@ -80,10 +80,12 @@ def update_dropdown(proff_v, day_v):
     dff = df.copy()
     if proff_v:
         dff = dff[dff.Profesor==proff_v]
+        return dff.to_dict('records')
 
 
     if day_v:
         dff = dff[dff.Dia == day_v]
-    return dff.to_dict('records')
+        return dff.to_dict('records')
+#un solo return al mismo nivel del if muestra la tabla
 if __name__ == '__main__':
     app.run_server(debug=False)
