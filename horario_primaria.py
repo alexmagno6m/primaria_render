@@ -57,6 +57,28 @@ html.Div([
                     'color': 'black'
                 } for col in df.columns
             ]
+            +
+            [
+                {
+                    'if': {
+                        'filter_query': '{{{}}} = "RA"'.format(col),
+                        'column_id': col
+                    },
+                    'backgroundColor': '#c1fba4',
+                    'color': 'black'
+                } for col in df.columns
+            ]
+            +
+            [
+                {
+                    'if': {
+                        'filter_query': '{{{}}} = "RC"'.format(col),
+                        'column_id': col
+                    },
+                    'backgroundColor': '#c1fba4',
+                    'color': 'black'
+                } for col in df.columns
+            ]
         ),
         style_cell_conditional = [
             {'if': {'column_id': 'Profesor'},
