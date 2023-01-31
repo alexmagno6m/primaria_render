@@ -6,7 +6,7 @@ import ssl
 ssl._create_default_https_context = ssl._create_unverified_context
 r = urllib.request.urlopen(
     'https://raw.githubusercontent.com/alexmagno6m/primaria_render/master/primaria_horario_2023.csv')
-df = pd.read_csv(r, sep=',')
+df = pd.read_csv(r, sep=';')
 df = df[['Profesor', 'Dia', '1', '2', '3', '4', '5', '6', '7', '8']]
 app = Dash(__name__)
 PAGE_SIZE = 12
