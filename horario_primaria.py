@@ -16,6 +16,7 @@ app.layout = html.Div([
     html.H2('Horario General Primaria'),
     html.H2('Colegio Antonio Baraya IED'),
 html.Div([
+    "Consulte el horario individual por profesor: ",
   dcc.Dropdown([x for x in sorted(df.Profesor.unique())],
                id='professor_drop',
                 placeholder="Seleccione/escriba profesor")
@@ -23,7 +24,7 @@ html.Div([
     style={'width':'35%'}
 ),
 html.Div([
-    "O tambien puede:",
+    "O tambien puede consultar el horario global por dia:",
     dcc.Dropdown([x for x in (df.Dia.unique())],
     id='dia_drop',
     placeholder="Seleccionar un dia")
@@ -56,6 +57,28 @@ html.Div([
                     'color': 'black'
                 } for col in df.columns
             ]
+            +
+            [
+                {
+                    'if': {
+                        'filter_query': '{{{}}} = "RA"'.format(col),
+                        'column_id': col
+                    },
+                    'backgroundColor': '#c1fba4',
+                    'color': 'black'
+                } for col in df.columns
+            ]
+            +
+            [
+                {
+                    'if': {
+                        'filter_query': '{{{}}} = "RC"'.format(col),
+                        'column_id': col
+                    },
+                    'backgroundColor': '#c1fba4',
+                    'color': 'black'
+                } for col in df.columns
+            ]
         ),
         style_cell_conditional = [
             {'if': {'column_id': 'Profesor'},
@@ -79,10 +102,12 @@ def update_dropdown(proff_v, day_v):
     dff = df.copy()
     if proff_v:
         dff = dff[dff.Profesor==proff_v]
+        return dff.to_dict('records')
 
 
     if day_v:
         dff = dff[dff.Dia == day_v]
-    return dff.to_dict('records')
+        return dff.to_dict('records')
+#un solo return al mismo nivel del if muestra la tabla
 if __name__ == '__main__':
     app.run_server(debug=False)
